@@ -1,0 +1,3 @@
+arrived_destination_port, customs_cleared
+customs_cleared, departed_destination_port
+sent_delivery_order_to_trucker, trucker_confirmed_delivery_order
