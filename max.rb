@@ -1,9 +1,7 @@
 require 'csv'
 require 'pry'
-# flex = CSV.read('flex.csv')
+flex = CSV.read('flex.csv')
 require 'tsort'
-require 'rake'
-include Rake::DSL
 
 class Hash
   include TSort
@@ -20,30 +18,15 @@ def flex_sort(arr)
   stuff.reduce(&:merge).tsort.reverse
 end
 
+sorted = flex_sort(flex)
 
-# customs_cleared, departed_destination_port
-# undergoing_usda_exam, customs_cleared
-#
-# CSV.foreach('flex.csv') do |row|
-#   binding.pry
-# end
+def write(sorted)
+  sorted_arrays = sorted.map { |element| [element] }
+  CSV.open('sorted.csv', 'w') do |csv|
+    sorted_arrays.each do |row|
+      csv << row
+    end
+  end
+end
 
-# arrived_destination_port, customs_cleared
-# customs_cleared, departed_destination_port
-# sent_delivery_order_to_trucker, trucker_confirmed_delivery_order
-# arrived_destination_port, undergoing_usda_exam
-# arrived_destination_port, undergoing_fda_hold
-# trucker_confirmed_delivery_order, delivery_scheduled
-# undergoing_usda_exam, customs_cleared
-# undergoing_fda_hold, customs_cleared
-# customs_cleared, delivery_scheduled
-# delivery_scheduled, departed_destination_port
-
-# sent_delivery_order_to_trucker,
-# arrived_destination_port
-# undergoing_usda_exam,
-# undergoing_fda_hold,
-# trucker_confirmed_delivery_order
-# customs_cleared
-# delivery_scheduled
-# departed_destination_port
+write(sorted)
