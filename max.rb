@@ -7,18 +7,20 @@ class Hash
   include TSort
   alias tsort_each_node each_key
   def tsort_each_child(node, &block)
-    fetch(node).each(&block)
+    fetch(node, []).each(&block)
   end
 end
 
-def flex_sort(arr)
-  stuff = arr.map do |head, *tail|
-    {head => tail}
+def reorder_sort(arr)
+  my_groups = Hash.new { |hash, key| hash[key] = [] }
+  arr.each do |head, tail|
+    my_groups[head] << tail
   end
-  stuff.reduce(&:merge).tsort.reverse
+
+  my_groups.tsort.reverse
 end
 
-sorted = flex_sort(flex)
+sorted = reorder_sort(flex)
 
 def write(sorted)
   sorted_arrays = sorted.map { |element| [element] }
